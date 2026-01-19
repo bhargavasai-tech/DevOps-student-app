@@ -1,50 +1,231 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Student CGPA App</title>
+    <meta charset="UTF-8">
+    <title>Student CGPA Management</title>
+
+    <!-- Google Font (Trending) -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 40px 0;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1000px;
+            animation: zoomIn 0.8s ease;
+        }
+
+        @keyframes zoomIn {
+            from {
+                transform: scale(0.9);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        h2 {
+            text-align: center;
+            color: #fff;
+            margin-bottom: 25px;
+            font-weight: 600;
+        }
+
+        /* Glass Card */
+        .card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            margin-bottom: 40px;
+        }
+
+        label {
+            font-size: 14px;
+            color: #fff;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border-radius: 10px;
+            border: none;
+            outline: none;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+
+        input:focus {
+            box-shadow: 0 0 0 2px #667eea;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, #ff758c, #ff7eb3);
+            color: #fff;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+        }
+
+        /* Table Styling */
+        h3 {
+            text-align: center;
+            color: #fff;
+            margin-bottom: 15px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #fff;
+            border-radius: 15px;
+            overflow: hidden;
+            animation: fadeUp 0.8s ease;
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        th {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: #fff;
+            padding: 12px;
+            font-size: 14px;
+        }
+
+        td {
+            padding: 10px;
+            text-align: center;
+            font-size: 13px;
+        }
+
+        tr:nth-child(even) {
+            background: #f4f6fb;
+        }
+
+        tr:hover {
+            background: #eef1ff;
+            transition: 0.3s;
+        }
+
+        @media (max-width: 768px) {
+            table {
+                font-size: 12px;
+            }
+        }
+    </style>
 </head>
-<body style="text-align:center; font-family:sans-serif;">
 
-<h2>Student CGPA Management System (CSE)</h2>
+<body>
 
-<form method="POST">
-Name: <input type="text" name="name" required><br><br>
-Roll No: <input type="text" name="rollno" required><br><br>
-Branch: <input type="text" name="branch" value="CSE" required><br><br>
+<div class="container">
 
-Python: <input type="number" name="python" required><br><br>
-Object Oriented Programming: <input type="number" name="oops" required><br><br>
-DBMS: <input type="number" name="dbms" required><br><br>
-Data Structures & Algorithm: <input type="number" name="dsa" required><br><br>
-Machine Learning: <input type="number" name="machine_learning" required><br><br>
+    <h2>🎓 Student CGPA Management System (CSE)</h2>
 
-<button type="submit">Submit</button>
-</form>
+    <!-- FORM CARD -->
+    <div class="card">
+        <form method="POST">
 
-<hr>
+            <label>Student Name</label>
+            <input type="text" name="name" required>
 
-<h3>Student Records</h3>
-<table border="1" style="margin:auto;">
-<tr>
-<th>ID</th><th>Name</th><th>Roll No</th><th>Branch</th>
-<th>Python</th><th>oops</th><th>DBMS</th><th>dsa</th><th>machine_learning</th><th>CGPA</th>
-</tr>
+            <label>Roll Number</label>
+            <input type="text" name="rollno" required>
 
-{% for s in students %}
-<tr>
-<td>{{ s[0] }}</td>
-<td>{{ s[1] }}</td>
-<td>{{ s[2] }}</td>
-<td>{{ s[3] }}</td>
-<td>{{ s[4] }}</td>
-<td>{{ s[5] }}</td>
-<td>{{ s[6] }}</td>
-<td>{{ s[7] }}</td>
-<td>{{ s[8] }}</td>
-<td>{{ s[9] }}</td>
-</tr>
-{% endfor %}
-</table>
+            <label>Branch</label>
+            <input type="text" name="branch" value="CSE" required>
+
+            <label>Python</label>
+            <input type="number" name="python" required>
+
+            <label>Object Oriented Programming</label>
+            <input type="number" name="oops" required>
+
+            <label>DBMS</label>
+            <input type="number" name="dbms" required>
+
+            <label>Data Structures & Algorithms</label>
+            <input type="number" name="dsa" required>
+
+            <label>Machine Learning</label>
+            <input type="number" name="machine_learning" required>
+
+            <button type="submit">🚀 Submit Student Data</button>
+        </form>
+    </div>
+
+    <!-- RECORDS -->
+    <h3>📊 Student Records</h3>
+
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Roll No</th>
+            <th>Branch</th>
+            <th>Python</th>
+            <th>OOPS</th>
+            <th>DBMS</th>
+            <th>DSA</th>
+            <th>ML</th>
+            <th>CGPA</th>
+        </tr>
+
+        {% for s in students %}
+        <tr>
+            <td>{{ s[0] }}</td>
+            <td>{{ s[1] }}</td>
+            <td>{{ s[2] }}</td>
+            <td>{{ s[3] }}</td>
+            <td>{{ s[4] }}</td>
+            <td>{{ s[5] }}</td>
+            <td>{{ s[6] }}</td>
+            <td>{{ s[7] }}</td>
+            <td>{{ s[8] }}</td>
+            <td><strong>{{ s[9] }}</strong></td>
+        </tr>
+        {% endfor %}
+    </table>
+
+</div>
 
 </body>
 </html>

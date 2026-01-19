@@ -15,3 +15,15 @@ env/
 
 # OS files
 .DS_Store
+
+# Terraform
+*.tfstate
+*.tfstate.*
+*.tfvars
+.terraform/
+
+# Database
+students.db
+
+# pem file
+*.pem

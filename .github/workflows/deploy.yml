@@ -1,0 +1,35 @@
+name: Deploy Student App to EC2
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          port: 22
+          script: |
+            sudo dnf update -y
+            sudo dnf install -y ansible-core git
+
+            mkdir -p /home/ec2-user/ansible_cicd
+            cd /home/ec2-user/ansible_cicd
+
+            echo "[webserver]" > hosts
+            echo "localhost ansible_connection=local" >> hosts
+
+            curl -o deploy.yml https://raw.githubusercontent.com/bhargavasai-tech/DevOps-student-app/main/ansible/deploy.yml
+
+            ansible-playbook -i hosts deploy.yml

@@ -27,3 +27,5 @@ students.db
 
 # pem file
 *.pem
+
+.terraform.lock.hcl

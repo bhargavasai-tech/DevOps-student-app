@@ -2,16 +2,17 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Student CGPA • 2027 UI</title>
+<title>Student CGPA • 2027 Interface</title>
 
+<!-- Future Fonts -->
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700&family=Space+Mono:wght@400&display=swap" rel="stylesheet">
 
 <style>
 /* ================= ROOT ================= */
 :root {
     --bg-main: #0b0e1a;
-    --glass: rgba(255,255,255,0.08);
-    --border: rgba(255,255,255,0.18);
+    --glass: rgba(255,255,255,0.1);
+    --border: rgba(255,255,255,0.25);
     --accent: #7cf3ff;
     --accent-soft: rgba(124,243,255,0.35);
     --text-main: #f4f6ff;
@@ -37,7 +38,7 @@ body {
     overflow-x: hidden;
 }
 
-/* Ambient glow motion */
+/* Ambient slow glow */
 body::after {
     content: "";
     position: fixed;
@@ -45,16 +46,16 @@ body::after {
     background: conic-gradient(
         from 0deg,
         transparent,
-        rgba(124,243,255,0.06),
+        rgba(124,243,255,0.05),
         transparent
     );
-    animation: slowRotate 30s linear infinite;
+    animation: slowRotate 35s linear infinite;
     pointer-events: none;
 }
 
 @keyframes slowRotate {
     from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
+    to   { transform: rotate(360deg); }
 }
 
 /* ================= CONTAINER ================= */
@@ -75,11 +76,9 @@ body::after {
     font-size: 2.6rem;
     font-weight: 700;
     letter-spacing: 1px;
-    position: relative;
     animation: titleReveal 1.2s cubic-bezier(.2,.8,.2,1);
 }
 
-/* Mask reveal animation */
 @keyframes titleReveal {
     from {
         opacity: 0;
@@ -103,9 +102,10 @@ body::after {
 
 /* ================= GLASS PANEL ================= */
 .panel {
+    position: relative;
     background: linear-gradient(
         180deg,
-        rgba(255,255,255,0.12),
+        rgba(255,255,255,0.14),
         rgba(255,255,255,0.04)
     );
     border: 1px solid var(--border);
@@ -114,20 +114,48 @@ body::after {
     padding: 36px;
     margin-bottom: 70px;
     box-shadow: 0 40px 90px rgba(0,0,0,0.65);
-    transform-style: preserve-3d;
-    animation: panelIn 1.2s cubic-bezier(.2,.8,.2,1);
+    animation: panelIn 1.1s cubic-bezier(.2,.8,.2,1);
+    overflow: hidden;
 }
 
-/* Panel scale-in */
+/* Floating panel entrance */
 @keyframes panelIn {
     from {
         opacity: 0;
-        transform: scale(0.85) translateY(60px);
+        transform: scale(0.88) translateY(60px);
     }
     to {
         opacity: 1;
         transform: scale(1) translateY(0);
     }
+}
+
+/* Light sweep animation (NON-BLOCKING) */
+.panel::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        120deg,
+        transparent 30%,
+        rgba(255,255,255,0.12),
+        transparent 70%
+    );
+    animation: sweep 7s ease-in-out infinite;
+    pointer-events: none;   /* 🔥 FIX */
+}
+
+@keyframes sweep {
+    0%   { transform: translateX(-120%); }
+    50%  { transform: translateX(120%); }
+    100% { transform: translateX(120%); }
+}
+
+/* Ensure content is always clickable */
+.panel form,
+.panel table {
+    position: relative;
+    z-index: 2;
 }
 
 /* ================= FORM ================= */
@@ -150,15 +178,16 @@ body::after {
     border-radius: 16px;
     border: none;
     outline: none;
-    background: rgba(255,255,255,0.12);
+    background: rgba(255,255,255,0.14);
     color: white;
     font-family: 'Space Mono', monospace;
     transition: transform .3s ease, box-shadow .3s ease;
 }
 
-/* Depth interaction */
-.field input:hover {
-    transform: translateY(-2px) scale(1.02);
+/* Input hover depth */
+.field input:hover,
+.field input:focus {
+    transform: translateY(-2px) scale(1.03);
     box-shadow: 0 12px 30px rgba(0,0,0,0.4);
 }
 
@@ -173,80 +202,4 @@ body::after {
     border-radius: 60px;
     border: none;
     cursor: pointer;
-    background: linear-gradient(135deg, #7cf3ff, #9d7cff);
-    font-weight: 600;
-    letter-spacing: 0.15em;
-    color: #0b0e1a;
-    transition: transform .4s cubic-bezier(.2,.8,.2,1), box-shadow .4s;
-}
-
-/* Magnetic hover */
-.submit button:hover {
-    transform: scale(1.06);
-    box-shadow: 0 25px 60px rgba(0,0,0,0.6);
-}
-
-/* ================= TABLE ================= */
-.table-title {
-    font-size: 1.5rem;
-    margin-bottom: 22px;
-}
-
-table {
-    width: 100%;
-    border-collapse: separate;
-    border-spacing: 0 14px;
-    font-family: 'Space Mono', monospace;
-    font-size: 0.78rem;
-}
-
-th {
-    text-align: left;
-    color: var(--text-dim);
-    padding: 10px;
-}
-
-td {
-    background: rgba(255,255,255,0.1);
-    padding: 15px 12px;
-    transition: transform .35s ease, background .35s ease;
-}
-
-/* Row lift interaction */
-tr:hover td {
-    transform: translateY(-3px) scale(1.02);
-    background: rgba(255,255,255,0.18);
-}
-
-tr td:first-child { border-radius: 16px 0 0 16px; }
-tr td:last-child  { border-radius: 0 16px 16px 0; }
-
-/* CGPA glow */
-.cgpa {
-    color: var(--accent);
-    font-weight: 700;
-    text-shadow: 0 0 12px var(--accent-soft);
-}
-
-/* ================= RESPONSIVE ================= */
-@media (max-width: 720px) {
-    .header h1 { font-size: 2rem; }
-}
-</style>
-</head>
-
-<body>
-
-<div class="wrapper">
-
-    <div class="header">
-        <h1>Student CGPA Interface</h1>
-        <span>next-gen academic analytics</span>
-    </div>
-
-    <!-- FORM -->
-    <div class="panel">
-        <form method="POST">
-            <div class="form-grid">
-
-                <div class="field"><label>Name</label><input type="text" name="na
+    background: lin

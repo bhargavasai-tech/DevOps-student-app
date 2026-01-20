@@ -2,21 +2,24 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Student CGPA • 2027 Interface</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student CGPA Management System</title>
 
-<!-- Future Fonts -->
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700&family=Space+Mono:wght@400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
 
 <style>
 /* ================= ROOT ================= */
 :root {
-    --bg-main: #0b0e1a;
-    --glass: rgba(255,255,255,0.1);
-    --border: rgba(255,255,255,0.25);
-    --accent: #7cf3ff;
-    --accent-soft: rgba(124,243,255,0.35);
-    --text-main: #f4f6ff;
-    --text-dim: rgba(255,255,255,0.55);
+    --cream: #f8f6f0;
+    --ivory: #fffef7;
+    --charcoal: #2d3436;
+    --forest: #1e3932;
+    --gold: #d4af37;
+    --burgundy: #722f37;
+    --slate: #4a5568;
+    --warm-gray: #8b8680;
+    --border-gold: rgba(212, 175, 55, 0.3);
+    --shadow: rgba(45, 52, 54, 0.08);
 }
 
 /* ================= RESET ================= */
@@ -28,299 +31,489 @@
 
 /* ================= BODY ================= */
 body {
+    font-family: 'Lato', sans-serif;
+    background: linear-gradient(to bottom, #f8f6f0 0%, #f0ede3 100%);
+    color: var(--charcoal);
+    line-height: 1.7;
     min-height: 100vh;
-    background:
-        radial-gradient(circle at 20% 20%, rgba(124,243,255,0.08), transparent 45%),
-        radial-gradient(circle at 80% 80%, rgba(255,255,255,0.06), transparent 50%),
-        var(--bg-main);
-    font-family: 'Sora', sans-serif;
-    color: var(--text-main);
-    overflow-x: hidden;
 }
 
-/* Ambient slow glow */
-body::after {
+/* Subtle texture overlay */
+body::before {
     content: "";
     position: fixed;
-    inset: -30%;
-    background: conic-gradient(
-        from 0deg,
-        transparent,
-        rgba(124,243,255,0.05),
-        transparent
-    );
-    animation: slowRotate 35s linear infinite;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.02) 2px, rgba(0,0,0,0.02) 4px);
     pointer-events: none;
-}
-
-@keyframes slowRotate {
-    from { transform: rotate(0deg); }
-    to   { transform: rotate(360deg); }
+    z-index: 1;
 }
 
 /* ================= CONTAINER ================= */
-.wrapper {
-    width: 92%;
-    max-width: 1200px;
-    margin: auto;
-    padding: 80px 0;
+.container {
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 50px 30px;
+    position: relative;
+    z-index: 2;
 }
 
 /* ================= HEADER ================= */
 .header {
     text-align: center;
-    margin-bottom: 70px;
+    margin-bottom: 50px;
+    padding-bottom: 30px;
+    border-bottom: 1px solid var(--border-gold);
 }
 
 .header h1 {
-    font-size: 2.6rem;
-    font-weight: 700;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 3rem;
+    font-weight: 600;
+    color: var(--forest);
+    margin-bottom: 10px;
     letter-spacing: 1px;
-    animation: titleReveal 1.2s cubic-bezier(.2,.8,.2,1);
 }
 
-@keyframes titleReveal {
-    from {
-        opacity: 0;
-        transform: scale(1.2);
-        clip-path: inset(0 0 100% 0);
-    }
-    to {
-        opacity: 1;
-        transform: scale(1);
-        clip-path: inset(0 0 0 0);
-    }
+.header p {
+    font-size: 1rem;
+    color: var(--warm-gray);
+    font-weight: 300;
+    letter-spacing: 2px;
+    text-transform: uppercase;
 }
 
-.header span {
+/* Decorative line */
+.header::after {
+    content: "";
     display: block;
-    margin-top: 10px;
-    font-family: 'Space Mono', monospace;
-    font-size: 0.85rem;
-    color: var(--text-dim);
+    width: 80px;
+    height: 2px;
+    background: linear-gradient(to right, transparent, var(--gold), transparent);
+    margin: 20px auto 0;
 }
 
-/* ================= GLASS PANEL ================= */
-.panel {
+/* ================= CARD ================= */
+.card {
+    background: var(--ivory);
+    border: 1px solid rgba(139, 134, 128, 0.2);
+    border-radius: 2px;
+    padding: 45px;
+    margin-bottom: 40px;
+    box-shadow: 
+        0 4px 12px var(--shadow),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8);
     position: relative;
-    background: linear-gradient(
-        180deg,
-        rgba(255,255,255,0.14),
-        rgba(255,255,255,0.04)
-    );
-    border: 1px solid var(--border);
-    border-radius: 28px;
-    backdrop-filter: blur(28px);
-    padding: 36px;
-    margin-bottom: 70px;
-    box-shadow: 0 40px 90px rgba(0,0,0,0.65);
-    animation: panelIn 1.1s cubic-bezier(.2,.8,.2,1);
-    overflow: hidden;
 }
 
-/* Floating panel entrance */
-@keyframes panelIn {
-    from {
-        opacity: 0;
-        transform: scale(0.88) translateY(60px);
-    }
-    to {
-        opacity: 1;
-        transform: scale(1) translateY(0);
-    }
-}
-
-/* Light sweep animation (NON-BLOCKING) */
-.panel::before {
+/* Corner accents */
+.card::before,
+.card::after {
     content: "";
     position: absolute;
-    inset: 0;
-    background: linear-gradient(
-        120deg,
-        transparent 30%,
-        rgba(255,255,255,0.12),
-        transparent 70%
-    );
-    animation: sweep 7s ease-in-out infinite;
-    pointer-events: none;   /* 🔥 FIX */
+    width: 40px;
+    height: 40px;
+    border: 1px solid var(--gold);
 }
 
-@keyframes sweep {
-    0%   { transform: translateX(-120%); }
-    50%  { transform: translateX(120%); }
-    100% { transform: translateX(120%); }
+.card::before {
+    top: 15px;
+    left: 15px;
+    border-right: none;
+    border-bottom: none;
 }
 
-/* Ensure content is always clickable */
-.panel form,
-.panel table {
+.card::after {
+    bottom: 15px;
+    right: 15px;
+    border-left: none;
+    border-top: none;
+}
+
+.card-header {
+    padding-bottom: 25px;
+    margin-bottom: 35px;
+    border-bottom: 1px solid var(--border-gold);
     position: relative;
-    z-index: 2;
+}
+
+.card-header h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: var(--forest);
+    letter-spacing: 0.5px;
+}
+
+.card-header h2::before {
+    content: "◆";
+    color: var(--gold);
+    margin-right: 12px;
+    font-size: 0.8em;
 }
 
 /* ================= FORM ================= */
 .form-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(230px,1fr));
-    gap: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
+    margin-bottom: 30px;
 }
 
-.field label {
-    font-size: 0.65rem;
-    letter-spacing: 0.18em;
-    color: var(--text-dim);
+.form-group {
+    display: flex;
+    flex-direction: column;
 }
 
-.field input {
-    width: 100%;
-    margin-top: 8px;
-    padding: 14px 16px;
-    border-radius: 16px;
-    border: none;
+.form-group label {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--slate);
+    margin-bottom: 10px;
+    letter-spacing: 0.3px;
+}
+
+.form-group input {
+    padding: 14px 18px;
+    border: 1px solid rgba(139, 134, 128, 0.3);
+    border-radius: 0;
+    font-size: 1rem;
+    font-family: 'Lato', sans-serif;
+    background: #ffffff;
+    color: var(--charcoal);
+    transition: all 0.3s ease;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.form-group input:focus {
     outline: none;
-    background: rgba(255,255,255,0.14);
-    color: white;
-    font-family: 'Space Mono', monospace;
-    transition: transform .3s ease, box-shadow .3s ease;
+    border-color: var(--gold);
+    box-shadow: 
+        inset 0 1px 3px rgba(0, 0, 0, 0.05),
+        0 0 0 2px rgba(212, 175, 55, 0.15);
 }
 
-/* Input hover depth */
-.field input:hover,
-.field input:focus {
-    transform: translateY(-2px) scale(1.03);
-    box-shadow: 0 12px 30px rgba(0,0,0,0.4);
+.form-group input::placeholder {
+    color: #b8b3ad;
+    font-style: italic;
 }
 
 /* ================= BUTTON ================= */
-.submit {
-    grid-column: 1 / -1;
+.btn-container {
+    display: flex;
+    justify-content: center;
+    padding-top: 15px;
+    border-top: 1px solid rgba(139, 134, 128, 0.15);
+    margin-top: 10px;
 }
 
-.submit button {
-    width: 100%;
-    padding: 16px;
-    border-radius: 60px;
-    border: none;
+.btn {
+    padding: 14px 50px;
+    background: linear-gradient(to bottom, var(--forest), #162820);
+    color: var(--ivory);
+    border: 1px solid var(--gold);
+    border-radius: 0;
+    font-size: 1rem;
+    font-weight: 400;
+    letter-spacing: 2px;
+    text-transform: uppercase;
     cursor: pointer;
-    background: linear-gradient(135deg, #7cf3ff, #9d7cff);
-    font-weight: 600;
-    letter-spacing: 0.15em;
-    color: #0b0e1a;
-    transition: transform .4s cubic-bezier(.2,.8,.2,1), box-shadow .4s;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(30, 57, 50, 0.3);
+    position: relative;
+    overflow: hidden;
 }
 
-/* Magnetic button */
-.submit button:hover {
-    transform: scale(1.06);
-    box-shadow: 0 25px 60px rgba(0,0,0,0.6);
+.btn::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(212, 175, 55, 0.2);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.5s, height 0.5s;
+}
+
+.btn:hover {
+    background: linear-gradient(to bottom, #162820, var(--forest));
+    box-shadow: 0 4px 16px rgba(30, 57, 50, 0.4);
+    transform: translateY(-2px);
+}
+
+.btn:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+.btn:active {
+    transform: translateY(0);
 }
 
 /* ================= TABLE ================= */
-.table-title {
-    font-size: 1.5rem;
-    margin-bottom: 22px;
+.table-container {
+    overflow-x: auto;
+    margin-top: 10px;
 }
 
 table {
     width: 100%;
     border-collapse: separate;
-    border-spacing: 0 14px;
-    font-family: 'Space Mono', monospace;
-    font-size: 0.78rem;
+    border-spacing: 0;
+}
+
+thead {
+    background: linear-gradient(to bottom, #f4f2ea, #ebe8de);
 }
 
 th {
+    padding: 16px 18px;
     text-align: left;
-    color: var(--text-dim);
-    padding: 10px;
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 600;
+    font-size: 1rem;
+    color: var(--forest);
+    border-bottom: 2px solid var(--gold);
+    border-top: 1px solid rgba(139, 134, 128, 0.2);
+    letter-spacing: 0.5px;
+}
+
+th:first-child {
+    border-left: 1px solid rgba(139, 134, 128, 0.2);
+}
+
+th:last-child {
+    border-right: 1px solid rgba(139, 134, 128, 0.2);
 }
 
 td {
-    background: rgba(255,255,255,0.12);
-    padding: 15px 12px;
-    transition: transform .35s ease, background .35s ease;
+    padding: 14px 18px;
+    border-bottom: 1px solid rgba(139, 134, 128, 0.15);
+    font-size: 0.95rem;
+    background: #ffffff;
 }
 
-/* Row lift */
-tr:hover td {
-    transform: translateY(-3px) scale(1.02);
-    background: rgba(255,255,255,0.18);
+tbody tr td:first-child {
+    border-left: 1px solid rgba(139, 134, 128, 0.15);
 }
 
-tr td:first-child { border-radius: 16px 0 0 16px; }
-tr td:last-child  { border-radius: 0 16px 16px 0; }
+tbody tr td:last-child {
+    border-right: 1px solid rgba(139, 134, 128, 0.15);
+}
 
-/* CGPA Glow */
-.cgpa {
-    color: var(--accent);
+tbody tr {
+    transition: all 0.2s ease;
+}
+
+tbody tr:hover {
+    background: #faf9f5;
+}
+
+tbody tr:hover td {
+    background: #faf9f5;
+}
+
+.cgpa-value {
+    font-family: 'Cormorant Garamond', serif;
     font-weight: 700;
-    text-shadow: 0 0 14px var(--accent-soft);
+    font-size: 1.2rem;
+    color: var(--burgundy);
+    letter-spacing: 0.5px;
+}
+
+/* ================= DECORATIVE ELEMENTS ================= */
+.ornament {
+    text-align: center;
+    margin: 40px 0;
+    color: var(--gold);
+    opacity: 0.4;
+    font-size: 1.2rem;
+    letter-spacing: 8px;
 }
 
 /* ================= RESPONSIVE ================= */
-@media (max-width: 720px) {
-    .header h1 { font-size: 2rem; }
+@media (max-width: 768px) {
+    .header h1 {
+        font-size: 2.2rem;
+    }
+    
+    .card {
+        padding: 30px 25px;
+    }
+    
+    .card::before,
+    .card::after {
+        width: 25px;
+        height: 25px;
+    }
+    
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    table {
+        font-size: 0.85rem;
+    }
+    
+    th, td {
+        padding: 12px 10px;
+    }
+    
+    .btn-container {
+        justify-content: stretch;
+    }
+    
+    .btn {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 30px 15px;
+    }
+    
+    .header h1 {
+        font-size: 1.8rem;
+    }
+}
+
+/* ================= SCROLLBAR ================= */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--cream);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--warm-gray);
+    border: 2px solid var(--cream);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--slate);
 }
 </style>
 </head>
 
 <body>
 
-<div class="wrapper">
+<div class="container">
 
     <div class="header">
-        <h1>Student CGPA Interface</h1>
-        <span>future academic analytics</span>
+        <h1>Student CGPA Registry</h1>
+        <p>Academic Excellence Tracker</p>
     </div>
 
-    <!-- FORM -->
-    <div class="panel">
-        <form method="POST">
+    <!-- ADD STUDENT FORM -->
+    <div class="card">
+        <div class="card-header">
+            <h2>Register Student Record</h2>
+        </div>
+        
+        <form method="POST" action="">
+
             <div class="form-grid">
 
-                <div class="field"><label>Name</label><input type="text" name="name" required></div>
-                <div class="field"><label>Roll No</label><input type="text" name="rollno" required></div>
-                <div class="field"><label>Branch</label><input type="text" name="branch" value="CSE"></div>
-
-                <div class="field"><label>Python</label><input type="number" name="python" required></div>
-                <div class="field"><label>OOPS</label><input type="number" name="oops" required></div>
-                <div class="field"><label>DBMS</label><input type="number" name="dbms" required></div>
-                <div class="field"><label>DSA</label><input type="number" name="dsa" required></div>
-                <div class="field"><label>Machine Learning</label><input type="number" name="machine_learning" required></div>
-
-                <div class="submit">
-                    <button type="submit">SAVE RECORD</button>
+                <div class="form-group">
+                    <label for="name">Student Name</label>
+                    <input type="text" id="name" name="name" required placeholder="Full name">
                 </div>
 
+                <div class="form-group">
+                    <label for="rollno">Roll Number</label>
+                    <input type="text" id="rollno" name="rollno" required placeholder="Registration number">
+                </div>
+
+                <div class="form-group">
+                    <label for="branch">Academic Branch</label>
+                    <input type="text" id="branch" name="branch" value="CSE" placeholder="Department">
+                </div>
+
+                <div class="form-group">
+                    <label for="python">Python Programming</label>
+                    <input type="number" id="python" name="python" required placeholder="Marks (0-100)" min="0" max="100">
+                </div>
+
+                <div class="form-group">
+                    <label for="oops">Object Oriented Programming</label>
+                    <input type="number" id="oops" name="oops" required placeholder="Marks (0-100)" min="0" max="100">
+                </div>
+
+                <div class="form-group">
+                    <label for="dbms">Database Management</label>
+                    <input type="number" id="dbms" name="dbms" required placeholder="Marks (0-100)" min="0" max="100">
+                </div>
+
+                <div class="form-group">
+                    <label for="dsa">Data Structures & Algorithms</label>
+                    <input type="number" id="dsa" name="dsa" required placeholder="Marks (0-100)" min="0" max="100">
+                </div>
+
+                <div class="form-group">
+                    <label for="ml">Machine Learning</label>
+                    <input type="number" id="ml" name="machine_learning" required placeholder="Marks (0-100)" min="0" max="100">
+                </div>
+
+            </div>
+            
+            <div class="btn-container">
+                <button type="submit" class="btn">Submit Record</button>
             </div>
         </form>
     </div>
 
-    <!-- RECORDS -->
-    <div class="panel">
-        <div class="table-title">Stored Records</div>
+    <div class="ornament">◆ ◆ ◆</div>
 
-        <table>
-            <tr>
-                <th>ID</th><th>Name</th><th>Roll</th><th>Branch</th>
-                <th>Py</th><th>OOPS</th><th>DBMS</th><th>DSA</th><th>ML</th><th>CGPA</th>
-            </tr>
-
-            {% for s in students %}
-            <tr>
-                <td>{{ s[0] }}</td>
-                <td>{{ s[1] }}</td>
-                <td>{{ s[2] }}</td>
-                <td>{{ s[3] }}</td>
-                <td>{{ s[4] }}</td>
-                <td>{{ s[5] }}</td>
-                <td>{{ s[6] }}</td>
-                <td>{{ s[7] }}</td>
-                <td>{{ s[8] }}</td>
-                <td class="cgpa">{{ s[9] }}</td>
-            </tr>
-            {% endfor %}
-        </table>
+    <!-- STUDENT RECORDS TABLE -->
+    <div class="card">
+        <div class="card-header">
+            <h2>Academic Registry</h2>
+        </div>
+        
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Roll No</th>
+                        <th>Branch</th>
+                        <th>Python</th>
+                        <th>OOPS</th>
+                        <th>DBMS</th>
+                        <th>DSA</th>
+                        <th>ML</th>
+                        <th>CGPA</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for s in students %}
+                    <tr>
+                        <td>{{ s[0] }}</td>
+                        <td>{{ s[1] }}</td>
+                        <td>{{ s[2] }}</td>
+                        <td>{{ s[3] }}</td>
+                        <td>{{ s[4] }}</td>
+                        <td>{{ s[5] }}</td>
+                        <td>{{ s[6] }}</td>
+                        <td>{{ s[7] }}</td>
+                        <td>{{ s[8] }}</td>
+                        <td class="cgpa-value">{{ s[9] }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
 
 </div>

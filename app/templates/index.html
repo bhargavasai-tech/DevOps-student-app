@@ -2,152 +2,139 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Student CGPA • Interface</title>
+<title>Student CGPA • 2027 UI</title>
 
-<!-- Rare fonts -->
-<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;500;700&family=IBM+Plex+Mono:wght@300;400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700&family=Space+Mono:wght@400&display=swap" rel="stylesheet">
 
 <style>
-/* ---------------- ROOT ---------------- */
+/* ================= ROOT ================= */
 :root {
-    --glass: rgba(255,255,255,0.12);
-    --border: rgba(255,255,255,0.28);
-    --text-main: #f5f7ff;
-    --text-dim: rgba(255,255,255,0.6);
+    --bg-main: #0b0e1a;
+    --glass: rgba(255,255,255,0.08);
+    --border: rgba(255,255,255,0.18);
+    --accent: #7cf3ff;
+    --accent-soft: rgba(124,243,255,0.35);
+    --text-main: #f4f6ff;
+    --text-dim: rgba(255,255,255,0.55);
 }
 
-/* ---------------- BASE ---------------- */
-* { box-sizing: border-box; }
-
-body {
+/* ================= RESET ================= */
+* {
     margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* ================= BODY ================= */
+body {
     min-height: 100vh;
-    font-family: 'Unbounded', sans-serif;
     background:
-        radial-gradient(circle at 15% 20%, #3a6073, transparent 45%),
-        radial-gradient(circle at 80% 80%, #16222a, transparent 50%),
-        #0a0d1a;
+        radial-gradient(circle at 20% 20%, rgba(124,243,255,0.08), transparent 45%),
+        radial-gradient(circle at 80% 80%, rgba(255,255,255,0.06), transparent 50%),
+        var(--bg-main);
+    font-family: 'Sora', sans-serif;
     color: var(--text-main);
     overflow-x: hidden;
 }
 
-/* ambient motion layer */
+/* Ambient glow motion */
 body::after {
     content: "";
     position: fixed;
-    inset: -20%;
-    background: linear-gradient(120deg,
-        transparent 30%,
-        rgba(255,255,255,0.04) 50%,
-        transparent 70%);
-    animation: drift 14s linear infinite;
+    inset: -30%;
+    background: conic-gradient(
+        from 0deg,
+        transparent,
+        rgba(124,243,255,0.06),
+        transparent
+    );
+    animation: slowRotate 30s linear infinite;
     pointer-events: none;
 }
 
-@keyframes drift {
-    from { transform: translateX(-30%); }
-    to   { transform: translateX(30%); }
+@keyframes slowRotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
 }
 
-/* ---------------- LAYOUT ---------------- */
-.wrap {
+/* ================= CONTAINER ================= */
+.wrapper {
     width: 92%;
-    max-width: 1150px;
+    max-width: 1200px;
     margin: auto;
-    padding: 70px 0;
+    padding: 80px 0;
 }
 
-/* ---------------- TITLE ---------------- */
-.title {
+/* ================= HEADER ================= */
+.header {
     text-align: center;
-    margin-bottom: 55px;
+    margin-bottom: 70px;
 }
 
-.title h1 {
-    font-size: 2.4rem;
+.header h1 {
+    font-size: 2.6rem;
     font-weight: 700;
     letter-spacing: 1px;
     position: relative;
-    display: inline-block;
-    animation: textZoom 1s ease;
+    animation: titleReveal 1.2s cubic-bezier(.2,.8,.2,1);
 }
 
-/* mirror reflection */
-.title h1::after {
-    content: attr(data-text);
-    position: absolute;
-    left: 0;
-    top: 110%;
-    width: 100%;
-    transform: scaleY(-1);
-    opacity: 0.15;
-    filter: blur(2px);
-    background: linear-gradient(to bottom, rgba(255,255,255,0.4), transparent);
-    -webkit-background-clip: text;
-    color: transparent;
+/* Mask reveal animation */
+@keyframes titleReveal {
+    from {
+        opacity: 0;
+        transform: scale(1.2);
+        clip-path: inset(0 0 100% 0);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+        clip-path: inset(0 0 0 0);
+    }
 }
 
-@keyframes textZoom {
-    from { transform: scale(0.9); opacity: 0; }
-    to   { transform: scale(1); opacity: 1; }
-}
-
-.title span {
+.header span {
     display: block;
-    margin-top: 8px;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.8rem;
+    margin-top: 10px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.85rem;
     color: var(--text-dim);
 }
 
-/* ---------------- GLASS PANEL ----------------- */
+/* ================= GLASS PANEL ================= */
 .panel {
     background: linear-gradient(
         180deg,
-        rgba(255,255,255,0.16),
-        rgba(255,255,255,0.05)
+        rgba(255,255,255,0.12),
+        rgba(255,255,255,0.04)
     );
     border: 1px solid var(--border);
-    border-radius: 26px;
-    backdrop-filter: blur(26px);
-    padding: 32px;
-    box-shadow: 0 35px 80px rgba(0,0,0,0.55);
-    margin-bottom: 60px;
-    position: relative;
-    overflow: hidden;
-    animation: floatUp 1.2s ease;
+    border-radius: 28px;
+    backdrop-filter: blur(28px);
+    padding: 36px;
+    margin-bottom: 70px;
+    box-shadow: 0 40px 90px rgba(0,0,0,0.65);
+    transform-style: preserve-3d;
+    animation: panelIn 1.2s cubic-bezier(.2,.8,.2,1);
 }
 
-/* light sweep mask */
-.panel::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-        120deg,
-        transparent 30%,
-        rgba(255,255,255,0.12),
-        transparent 70%);
-    transform: translateX(-100%);
-    animation: sweep 6s ease-in-out infinite;
+/* Panel scale-in */
+@keyframes panelIn {
+    from {
+        opacity: 0;
+        transform: scale(0.85) translateY(60px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
 }
 
-@keyframes sweep {
-    0% { transform: translateX(-120%); }
-    50% { transform: translateX(120%); }
-    100% { transform: translateX(120%); }
-}
-
-@keyframes floatUp {
-    from { transform: translateY(40px); opacity: 0; }
-    to   { transform: translateY(0); opacity: 1; }
-}
-
-/* ---------------- FORM ---------------- */
+/* ================= FORM ================= */
 .form-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(230px,1fr));
-    gap: 18px;
+    gap: 20px;
 }
 
 .field label {
@@ -159,53 +146,57 @@ body::after {
 .field input {
     width: 100%;
     margin-top: 8px;
-    padding: 13px 15px;
-    border-radius: 14px;
+    padding: 14px 16px;
+    border-radius: 16px;
     border: none;
     outline: none;
-    background: rgba(255,255,255,0.14);
+    background: rgba(255,255,255,0.12);
     color: white;
-    font-family: 'IBM Plex Mono', monospace;
+    font-family: 'Space Mono', monospace;
+    transition: transform .3s ease, box-shadow .3s ease;
 }
 
-.field input:focus {
-    box-shadow: 0 0 0 2px rgba(255,255,255,0.35);
+/* Depth interaction */
+.field input:hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.4);
 }
 
-/* ---------------- BUTTON ---------------- */
+/* ================= BUTTON ================= */
 .submit {
     grid-column: 1 / -1;
 }
 
 .submit button {
     width: 100%;
-    padding: 15px;
-    border-radius: 50px;
+    padding: 16px;
+    border-radius: 60px;
     border: none;
     cursor: pointer;
+    background: linear-gradient(135deg, #7cf3ff, #9d7cff);
     font-weight: 600;
-    letter-spacing: 0.12em;
-    background: linear-gradient(135deg, #89f7fe, #66a6ff);
-    color: #0a0d1a;
-    transition: transform .4s ease, box-shadow .4s ease;
+    letter-spacing: 0.15em;
+    color: #0b0e1a;
+    transition: transform .4s cubic-bezier(.2,.8,.2,1), box-shadow .4s;
 }
 
+/* Magnetic hover */
 .submit button:hover {
-    transform: scale(1.04);
-    box-shadow: 0 18px 40px rgba(0,0,0,0.45);
+    transform: scale(1.06);
+    box-shadow: 0 25px 60px rgba(0,0,0,0.6);
 }
 
-/* ---------------- TABLE ---------------- */
+/* ================= TABLE ================= */
 .table-title {
-    margin-bottom: 18px;
-    font-size: 1.4rem;
+    font-size: 1.5rem;
+    margin-bottom: 22px;
 }
 
 table {
     width: 100%;
     border-collapse: separate;
-    border-spacing: 0 12px;
-    font-family: 'IBM Plex Mono', monospace;
+    border-spacing: 0 14px;
+    font-family: 'Space Mono', monospace;
     font-size: 0.78rem;
 }
 
@@ -216,85 +207,46 @@ th {
 }
 
 td {
-    background: rgba(255,255,255,0.12);
-    padding: 14px 10px;
+    background: rgba(255,255,255,0.1);
+    padding: 15px 12px;
+    transition: transform .35s ease, background .35s ease;
 }
 
-tr td:first-child { border-radius: 14px 0 0 14px; }
-tr td:last-child  { border-radius: 0 14px 14px 0; }
-
+/* Row lift interaction */
 tr:hover td {
+    transform: translateY(-3px) scale(1.02);
     background: rgba(255,255,255,0.18);
 }
 
-/* CGPA highlight */
+tr td:first-child { border-radius: 16px 0 0 16px; }
+tr td:last-child  { border-radius: 0 16px 16px 0; }
+
+/* CGPA glow */
 .cgpa {
-    color: #89f7fe;
+    color: var(--accent);
     font-weight: 700;
+    text-shadow: 0 0 12px var(--accent-soft);
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 720px) {
+    .header h1 { font-size: 2rem; }
 }
 </style>
 </head>
 
 <body>
 
-<div class="wrap">
+<div class="wrapper">
 
-    <div class="title">
-        <h1 data-text="Student CGPA Interface">Student CGPA Interface</h1>
-        <span>academic analytics • visual dashboard</span>
+    <div class="header">
+        <h1>Student CGPA Interface</h1>
+        <span>next-gen academic analytics</span>
     </div>
 
-    <!-- FORM PANEL -->
+    <!-- FORM -->
     <div class="panel">
         <form method="POST">
             <div class="form-grid">
 
-                <div class="field"><label>Name</label><input type="text" name="name" required></div>
-                <div class="field"><label>Roll No</label><input type="text" name="rollno" required></div>
-                <div class="field"><label>Branch</label><input type="text" name="branch" value="CSE"></div>
-
-                <div class="field"><label>Python</label><input type="number" name="python" required></div>
-                <div class="field"><label>OOPS</label><input type="number" name="oops" required></div>
-                <div class="field"><label>DBMS</label><input type="number" name="dbms" required></div>
-                <div class="field"><label>DSA</label><input type="number" name="dsa" required></div>
-                <div class="field"><label>Machine Learning</label><input type="number" name="machine_learning" required></div>
-
-                <div class="submit">
-                    <button type="submit">SAVE RECORD</button>
-                </div>
-
-            </div>
-        </form>
-    </div>
-
-    <!-- RECORDS PANEL -->
-    <div class="panel">
-        <div class="table-title">Stored Records</div>
-
-        <table>
-            <tr>
-                <th>ID</th><th>Name</th><th>Roll</th><th>Branch</th>
-                <th>Py</th><th>OOPS</th><th>DBMS</th><th>DSA</th><th>ML</th><th>CGPA</th>
-            </tr>
-
-            {% for s in students %}
-            <tr>
-                <td>{{ s[0] }}</td>
-                <td>{{ s[1] }}</td>
-                <td>{{ s[2] }}</td>
-                <td>{{ s[3] }}</td>
-                <td>{{ s[4] }}</td>
-                <td>{{ s[5] }}</td>
-                <td>{{ s[6] }}</td>
-                <td>{{ s[7] }}</td>
-                <td>{{ s[8] }}</td>
-                <td class="cgpa">{{ s[9] }}</td>
-            </tr>
-            {% endfor %}
-        </table>
-    </div>
-
-</div>
-
-</body>
-</html>
+                <div class="field"><label>Name</label><input type="text" name="na
